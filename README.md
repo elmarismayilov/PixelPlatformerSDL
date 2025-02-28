@@ -1,6 +1,6 @@
 # PixelPlatformer
 
-![PixelPlatformer Demo](https://www.youtube.com/watch?v=-IV1tDEqrr4)
+![PixelPlatformer Demo]((https://www.youtube.com/watch?v=-IV1tDEqrr4))
 *A 2D tile-based sandbox game framework built from scratch in SDL.*
 
 ## Overview
