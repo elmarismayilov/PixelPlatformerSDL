@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(SDL_Renderer* renderer) : mRenderer(renderer)
+Player::Player(SDL_Renderer* renderer) : mRenderer(renderer), invRows(1), invCols(3), inventory(invRows, invCols)
 {
     mTexture = IMG_LoadTexture(mRenderer, "../assets/images/characters/player.png");
     if (mTexture == nullptr)
@@ -12,6 +12,8 @@ Player::Player(SDL_Renderer* renderer) : mRenderer(renderer)
     mDestRect.y = mPosition.y;
     mDestRect.w = mSIZE;
     mDestRect.h = mSIZE;
+    inventory.addItem(1,30);
+    inventory.addItem(2,30);
 }
 
 Player::~Player()

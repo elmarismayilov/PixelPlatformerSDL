@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include "World.h"
 #include <iostream>
+#include "Inventory.h"
 
 struct Vector2 {
     int x, y;
@@ -17,7 +18,6 @@ struct KeyPressed
     bool space = false;
     bool helperP = false;
     bool mouseLeft = false;
-    bool mouseRight = false;
 };
 
 class Player {
@@ -49,6 +49,10 @@ private:
     const float gravity = 500.0f;
     const float blockPutRange = 100.0f;
     bool onGround = false;
+    Inventory inventory;
+    int currentSlot;
+    int invRows;
+    int invCols;
 };
 
 #endif

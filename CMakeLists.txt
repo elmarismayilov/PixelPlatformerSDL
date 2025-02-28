@@ -53,7 +53,9 @@ add_executable(${PROJECT_NAME} ${SOURCES}
         include/Player.h
         src/Player.cpp
         include/World.h
-        src/World.cpp)
+        src/World.cpp
+        include/Inventory.h
+        src/Inventory.cpp)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME}
