@@ -94,6 +94,7 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
         if (mVelocityYFloat > 0) { // Moving down
             mVelocityYFloat = 0;
             mMoveAccumulatorY = 0;
+            onGround = true;
         }
     }
 

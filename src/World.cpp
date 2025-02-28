@@ -7,6 +7,7 @@ World::World(SDL_Renderer* renderer, int defaultBlock) : mRenderer(renderer)
     texturePaths.push_back("../assets/images/blocks/0.png");
     texturePaths.push_back("../assets/images/blocks/1.png");
     texturePaths.push_back("../assets/images/blocks/2.png");
+    texturePaths.push_back("../assets/images/blocks/3.png");
     for (int i = 0; i < texturePaths.size(); i++)
     {
         SDL_Texture* texture = IMG_LoadTexture(renderer, texturePaths[i].c_str());
@@ -25,6 +26,7 @@ World::World(SDL_Renderer* renderer, int defaultBlock) : mRenderer(renderer)
         {
             if (i == 18) blocks[i][j] = 1;
             if (i > 18) blocks[i][j] = 2;
+            if (i >= HEIGHT -3 ) blocks[i][j] = 3;
         }
     }
 }
