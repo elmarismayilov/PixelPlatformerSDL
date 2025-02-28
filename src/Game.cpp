@@ -3,7 +3,6 @@
 
 Game::Game() : mRunning(false), mWindow(nullptr), mRenderer(nullptr), mPreviousTicks(0), mPlayer(nullptr), world(nullptr)
 {
-
 }
 
 Game::~Game()
@@ -11,7 +10,7 @@ Game::~Game()
     shutdown();
 }
 
-bool Game::initialize(int width, int height, const char *title)
+bool Game::initialize(int width, int height, const char* title)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     {
@@ -26,7 +25,7 @@ bool Game::initialize(int width, int height, const char *title)
         width,
         height,
         SDL_WINDOW_SHOWN
-        );
+    );
     if (!mWindow)
     {
         std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
@@ -39,7 +38,7 @@ bool Game::initialize(int width, int height, const char *title)
         std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
-    // Initialize
+
     mPlayer = new Player(mRenderer);
     world = new World(mRenderer, 0);
 
@@ -62,6 +61,10 @@ bool Game::initialize(int width, int height, const char *title)
 
     mRunning = true;
     mPreviousTicks = SDL_GetTicks();
+
+    // Initialize camera position
+    camera.x = mPlayer->mPosition.x - camera.w / 2;
+    camera.y = mPlayer->mPosition.y - camera.h / 2;
 
     return true;
 }
@@ -167,8 +170,26 @@ void Game::handleEvents()
 
 void Game::update(float deltaTime)
 {
-    //Game Logic
-    mPlayer->update(deltaTime,keys, *world);
+    mPlayer->update(deltaTime, keys, *world);
+
+    // Camera smoothing
+    float smoothFactorX = 0.1f;
+    float smoothFactorY = 0.05f;
+    float deadZoneY = 50.0f;
+
+    float targetX = mPlayer->mPosition.x + mPlayer->mSIZE / 2 - camera.w / 2;
+    float targetY = mPlayer->mPosition.y + mPlayer->mSIZE / 2 - camera.h / 2;
+
+    // Smooth X movement
+    camera.x += static_cast<int>((targetX - camera.x) * smoothFactorX);
+    // Smooth Y movement only outside dead zone
+    if (std::abs(targetY - camera.y) > deadZoneY) {
+        camera.y += static_cast<int>((targetY - camera.y) * smoothFactorY);
+    }
+
+    // Clamp camera to world bounds
+    camera.x = std::max(0, std::min(camera.x, world->WIDTH * world->TILE_SIZE - camera.w));
+    camera.y = std::max(0, std::min(camera.y, world->HEIGHT * world->TILE_SIZE - camera.h));
 }
 
 void Game::render()
@@ -176,14 +197,12 @@ void Game::render()
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
     SDL_RenderClear(mRenderer);
 
-    // Render game objects here
-    world->render();
-    mPlayer->render();
-
+    // Apply camera offset
+    world->render(camera);
+    mPlayer->render(camera);
 
     SDL_RenderPresent(mRenderer);
 }
-
 void Game::shutdown()
 {
     delete mPlayer;

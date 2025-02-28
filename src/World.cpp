@@ -1,11 +1,9 @@
 #include "World.h"
-
 #include <SDL_image.h>
 #include <iostream>
 
-World::World(SDL_Renderer *renderer,int defaultBlock) : mRenderer(renderer)
+World::World(SDL_Renderer* renderer, int defaultBlock) : mRenderer(renderer)
 {
-    // Add textures to texturePaths
     texturePaths.push_back("../assets/images/blocks/0.png");
     texturePaths.push_back("../assets/images/blocks/1.png");
     texturePaths.push_back("../assets/images/blocks/2.png");
@@ -25,14 +23,8 @@ World::World(SDL_Renderer *renderer,int defaultBlock) : mRenderer(renderer)
     {
         for (int j = 0; j < WIDTH; j++)
         {
-            if (i == 18)
-            {
-                blocks[i][j] = 1;
-            }
-            if (i > 18)
-            {
-                blocks[i][j] = 2;
-            }
+            if (i == 18) blocks[i][j] = 1;
+            if (i > 18) blocks[i][j] = 2;
         }
     }
 }
@@ -46,17 +38,27 @@ World::~World()
     }
 }
 
-
-void World::render()
+void World::render(SDL_Rect camera)
 {
+    this->camera = camera; // Store camera for Player access
     SDL_Texture* texture;
     SDL_Rect rect;
-    for (int i = 0; i < HEIGHT; i++)
+    int startX = camera.x / TILE_SIZE;
+    int endX = (camera.x + camera.w) / TILE_SIZE + 1;
+    int startY = camera.y / TILE_SIZE;
+    int endY = (camera.y + camera.h) / TILE_SIZE + 1;
+
+    startX = std::max(0, startX);
+    endX = std::min(WIDTH, endX);
+    startY = std::max(0, startY);
+    endY = std::min(HEIGHT, endY);
+
+    for (int i = startY; i < endY; i++)
     {
-        for (int j = 0; j < WIDTH; j++)
+        for (int j = startX; j < endX; j++)
         {
             texture = textures[blocks[i][j]];
-            rect = {j*TILE_SIZE, i*TILE_SIZE, TILE_SIZE, TILE_SIZE};
+            rect = {j * TILE_SIZE - camera.x, i * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE};
             SDL_RenderCopy(mRenderer, texture, NULL, &rect);
         }
     }

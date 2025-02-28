@@ -29,6 +29,8 @@ private:
     Player* mPlayer;
     KeyPressed keys;
     World* world;
+
+    SDL_Rect camera = {0, 0, 1280, 720};
 };
 
 
