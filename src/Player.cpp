@@ -2,6 +2,7 @@
 
 Player::Player(SDL_Renderer* renderer, int invRows, int invCols) : mRenderer(renderer), inventory(invRows,invCols), inventoryUI(renderer, 1.0f), currentSlot(0)
 {
+    // Player Texture
     mTexture = IMG_LoadTexture(mRenderer, "../assets/images/characters/player.png");
     if (mTexture == nullptr)
     {
@@ -46,7 +47,7 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
     {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
-        int xPos = (mouseX + world.camera.x) / world.TILE_SIZE; // Adjust for camera
+        int xPos = (mouseX + world.camera.x) / world.TILE_SIZE;
         int yPos = (mouseY + world.camera.y) / world.TILE_SIZE;
         std::cout << "Mouse position: (" << xPos << ", " << yPos << ")" << std::endl;
 
@@ -109,28 +110,28 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
 
     if (mPosition.x <= 0) {
         mPosition.x = 0;
-        if (mVelocityX < 0) { // Moving left
+        if (mVelocityX < 0) {
             mVelocityX = 0;
             mMoveAccumulatorX = 0;
         }
     }
     if (mPosition.y <= 0) {
         mPosition.y = 0;
-        if (mVelocityYFloat < 0) { // Moving up
+        if (mVelocityYFloat < 0) {
             mVelocityYFloat = 0;
             mMoveAccumulatorY = 0;
         }
     }
     if (mPosition.x >= world.TILE_SIZE * world.WIDTH - mSIZE) {
         mPosition.x = world.TILE_SIZE * world.WIDTH - mSIZE;
-        if (mVelocityX > 0) { // Moving right
+        if (mVelocityX > 0) {
             mVelocityX = 0;
             mMoveAccumulatorX = 0;
         }
     }
     if (mPosition.y >= world.TILE_SIZE * world.HEIGHT - mSIZE) {
         mPosition.y = world.TILE_SIZE * world.HEIGHT - mSIZE;
-        if (mVelocityYFloat > 0) { // Moving down
+        if (mVelocityYFloat > 0) {
             mVelocityYFloat = 0;
             mMoveAccumulatorY = 0;
             onGround = true;
@@ -143,7 +144,6 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
 
 bool Player::putBlock(World& world, int xPos, int yPos, int block)
 {
-    // Same as before, unchanged
     int x = xPos * world.TILE_SIZE + world.TILE_SIZE / 2;
     int y = yPos * world.TILE_SIZE + world.TILE_SIZE / 2;
 
@@ -178,7 +178,6 @@ bool Player::putBlock(World& world, int xPos, int yPos, int block)
 
 bool Player::breakBlock(World& world, int xPos, int yPos)
 {
-    // Same as before, unchanged
     int x = xPos * world.TILE_SIZE + world.TILE_SIZE / 2;
     int y = yPos * world.TILE_SIZE + world.TILE_SIZE / 2;
 

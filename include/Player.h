@@ -32,7 +32,7 @@ public:
     bool putBlock(World& world, int xPos, int yPos, int block);
     bool breakBlock(World& world, int xPos, int yPos);
 
-    Vector2 mPosition = {900, 300}; // Initial position
+    Vector2 mPosition = {900, 300};
     const int mSIZE = 24;
 private:
     bool isSolidBlock(World& world, int xPos, int yPos);

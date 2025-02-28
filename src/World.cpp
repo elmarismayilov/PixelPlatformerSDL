@@ -42,7 +42,7 @@ World::~World()
 
 void World::render(SDL_Rect camera)
 {
-    this->camera = camera; // Store camera for Player access
+    this->camera = camera;
     SDL_Texture* texture;
     SDL_Rect rect;
     int startX = camera.x / TILE_SIZE;

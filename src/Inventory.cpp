@@ -30,10 +30,7 @@ bool Inventory::addItem(int itemID, int quantity)
 
 bool Inventory::removeItem(int itemID, int quantity)
 {
-    // Early return if invalid parameters
     if (itemID <= 0 || quantity <= 0) return false;
-
-    // Since we only have one row, we can optimize the search
     for (int j = 0; j < cols; j++)
     {
         if (slots[0][j].itemID == itemID)
@@ -43,7 +40,6 @@ bool Inventory::removeItem(int itemID, int quantity)
                 slots[0][j].amount -= quantity;
                 if (slots[0][j].amount <= 0)
                 {
-                    // Reset to empty slot
                     slots[0][j] = Slot();
                 }
                 return true;
