@@ -1,6 +1,6 @@
 # PixelPlatformer
 
-![PixelPlatformer Demo]((https://www.youtube.com/watch?v=-IV1tDEqrr4))  
+![PixelPlatformer Demo](https://www.youtube.com/watch?v=-IV1tDEqrr4)
 *A 2D tile-based sandbox game framework built from scratch in SDL.*
 
 ## Overview
@@ -57,7 +57,7 @@ This framework can evolve into a full multiplayer sandbox, a single-player adven
 
 ### Demo
 
-Check out the gameplay demo on YouTube: [(https://www.youtube.com/watch?v=-IV1tDEqrr4)].  
+Check out the gameplay demo on YouTube: https://www.youtube.com/watch?v=-IV1tDEqrr4. 
 The video showcases movement, block breaking/placing, inventory usage, and the camera system in action.
 
 ### Building and Running
