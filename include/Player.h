@@ -6,6 +6,7 @@
 #include "World.h"
 #include <iostream>
 #include "Inventory.h"
+#include "InventoryUI.h"
 
 struct Vector2 {
     int x, y;
@@ -18,11 +19,12 @@ struct KeyPressed
     bool space = false;
     bool helperP = false;
     bool mouseLeft = false;
+    int inventorySlot = 0;
 };
 
 class Player {
 public:
-    Player(SDL_Renderer* renderer);
+    Player(SDL_Renderer* renderer, int invRows, int invCols);
     ~Player();
 
     void update(float deltaTime, KeyPressed keys, World& world);
@@ -50,9 +52,8 @@ private:
     const float blockPutRange = 100.0f;
     bool onGround = false;
     Inventory inventory;
+    InventoryUI inventoryUI;
     int currentSlot;
-    int invRows;
-    int invCols;
 };
 
 #endif

@@ -55,7 +55,9 @@ add_executable(${PROJECT_NAME} ${SOURCES}
         include/World.h
         src/World.cpp
         include/Inventory.h
-        src/Inventory.cpp)
+        src/Inventory.cpp
+        include/InventoryUI.h
+        src/InventoryUI.cpp)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME}

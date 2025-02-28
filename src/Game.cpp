@@ -39,7 +39,7 @@ bool Game::initialize(int width, int height, const char* title)
         return false;
     }
 
-    mPlayer = new Player(mRenderer);
+    mPlayer = new Player(mRenderer, 1, 3);
     world = new World(mRenderer, 0);
 
     int imgFlags = IMG_INIT_PNG;
@@ -116,6 +116,36 @@ void Game::handleEvents()
                     break;
                 case SDLK_w:
                     world->printWorld();
+                    break;
+                case SDLK_0:
+                    keys.inventorySlot = 0;
+                    break;
+                case SDLK_1:
+                    keys.inventorySlot = 1;
+                    break;
+                case SDLK_2:
+                    keys.inventorySlot = 2;
+                    break;
+                case SDLK_3:
+                    keys.inventorySlot = 3;
+                    break;
+                case SDLK_4:
+                    keys.inventorySlot = 4;
+                    break;
+                case SDLK_5:
+                    keys.inventorySlot = 5;
+                    break;
+                case SDLK_6:
+                    keys.inventorySlot = 6;
+                    break;
+                case SDLK_7:
+                    keys.inventorySlot = 7;
+                    break;
+                case SDLK_8:
+                    keys.inventorySlot = 8;
+                    break;
+                case SDLK_9:
+                    keys.inventorySlot = 9;
                     break;
                 default:
                     break;

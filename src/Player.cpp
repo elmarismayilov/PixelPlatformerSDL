@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(SDL_Renderer* renderer) : mRenderer(renderer), invRows(1), invCols(3), inventory(invRows, invCols)
+Player::Player(SDL_Renderer* renderer, int invRows, int invCols) : mRenderer(renderer), inventory(invRows,invCols), inventoryUI(renderer, 1.0f), currentSlot(0)
 {
     mTexture = IMG_LoadTexture(mRenderer, "../assets/images/characters/player.png");
     if (mTexture == nullptr)
@@ -12,6 +12,7 @@ Player::Player(SDL_Renderer* renderer) : mRenderer(renderer), invRows(1), invCol
     mDestRect.y = mPosition.y;
     mDestRect.w = mSIZE;
     mDestRect.h = mSIZE;
+
     inventory.addItem(1,30);
     inventory.addItem(2,30);
 }
@@ -26,15 +27,20 @@ void Player::render(SDL_Rect camera)
 {
     SDL_Rect renderRect = {mDestRect.x - camera.x, mDestRect.y - camera.y, mDestRect.w, mDestRect.h};
     SDL_RenderCopy(mRenderer, mTexture, NULL, &renderRect);
+
+    int w,h;
+    SDL_GetRendererOutputSize(mRenderer, &w, &h);
+
+    inventoryUI.render(inventory,currentSlot,w,h);
 }
 
 void Player::update(float deltaTime, KeyPressed keys, World& world) {
     mVelocityX = 0;
-
+    currentSlot = keys.inventorySlot;
     if (keys.left && !keys.right) mVelocityX = -movementSpeed;
     if (keys.right && !keys.left) mVelocityX = movementSpeed;
     if (keys.helperP) {
-        std::cout << "Player x: " << mPosition.x << " Player y: " << mPosition.y << std::endl;
+        inventory.printInventory();
     }
     if (keys.mouseLeft)
     {
@@ -42,12 +48,43 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
         SDL_GetMouseState(&mouseX, &mouseY);
         int xPos = (mouseX + world.camera.x) / world.TILE_SIZE; // Adjust for camera
         int yPos = (mouseY + world.camera.y) / world.TILE_SIZE;
-
         std::cout << "Mouse position: (" << xPos << ", " << yPos << ")" << std::endl;
-        bool broken = breakBlock(world, xPos, yPos);
-        if (broken)
+
+        if (currentSlot == 0)
         {
-            std::cout << "Block successfully broken" << std::endl;
+            std::cout << "Attempting to break block at (" << xPos / world.TILE_SIZE << ", " << yPos / world.TILE_SIZE <<
+                    ")" << std::endl;
+            bool broken = breakBlock(world, xPos, yPos);
+            if (broken)
+            {
+                std::cout << "Block successfully broken" << std::endl;
+            }
+        }
+        else if (currentSlot > 0 && currentSlot <= inventory.cols)
+        {
+            int slotIndex = currentSlot - 1;
+
+            std::cout << "Trying to place from slot index: " << slotIndex << std::endl;
+            std::cout << "Item ID: " << inventory.slots[0][slotIndex].itemID << std::endl;
+            std::cout << "Amount: " << inventory.slots[0][slotIndex].amount << std::endl;
+
+            if (!inventory.slots[0][slotIndex].isEmpty())
+            {
+                int itemID = inventory.slots[0][slotIndex].itemID;
+
+                std::cout << "Attempting to place block with ID " << itemID << " at ("
+                        << xPos / world.TILE_SIZE << ", " << yPos / world.TILE_SIZE << ")" << std::endl;
+
+                bool placed = putBlock(world, xPos, yPos, itemID);
+                if (placed)
+                {
+                    std::cout << "Block successfully placed" << std::endl;
+                }
+            }
+        }
+        else
+        {
+            std::cout << "Selected slot is empty" << std::endl;
         }
     }
 
@@ -127,6 +164,8 @@ bool Player::putBlock(World& world, int xPos, int yPos, int block)
         {
             world.blocks[yPos][xPos] = block;
             std::cout << "Block placed successfully at (" << xPos << ", " << yPos << ")" << std::endl;
+
+            inventory.removeItem(block, 1);
             return true;
         }
         std::cout << "Cannot place block - space occupied or invalid position" << std::endl;
@@ -166,6 +205,8 @@ bool Player::breakBlock(World& world, int xPos, int yPos)
             }
             world.blocks[yPos][xPos] = 0;
             std::cout << "Block broken successfully at (" << xPos << ", " << yPos << ")" << std::endl;
+
+            inventory.addItem(oldBlock, 1);
             return true;
         }
         std::cout << "Cannot break block - bedrock or invalid position" << std::endl;
