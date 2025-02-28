@@ -77,6 +77,7 @@ void Game::run()
 
         Uint32 currentTicks = SDL_GetTicks();
         float deltaTime = (currentTicks - mPreviousTicks) / 1000.0f;
+        deltaTime = std::min(deltaTime, 0.1f);
         mPreviousTicks = currentTicks;
 
         update(deltaTime);

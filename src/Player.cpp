@@ -70,6 +70,9 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
     mMoveAccumulatorY -= deltaY;
     mPosition.y += deltaY;
 
+    if (mPosition.x < 0) mPosition.x = 0;
+    if (mPosition.y < 0) mPosition.y = 0;
+
     mDestRect.x = mPosition.x;
     mDestRect.y = mPosition.y;
 }
