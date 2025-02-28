@@ -32,9 +32,7 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
     if (keys.left && !keys.right) mVelocityX = -movementSpeed;
     if (keys.right && !keys.left) mVelocityX = movementSpeed;
     if (keys.helperP) {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-        std::cout << "Mouse x: " << mouseX << " Mouse y: " << mouseY << std::endl;
+        std::cout << "Player x: " << mPosition.x << " Player y: " << mPosition.y << std::endl;
     }
     if (keys.mouseLeft)
     {
@@ -70,8 +68,34 @@ void Player::update(float deltaTime, KeyPressed keys, World& world) {
     mMoveAccumulatorY -= deltaY;
     mPosition.y += deltaY;
 
-    if (mPosition.x < 0) mPosition.x = 0;
-    if (mPosition.y < 0) mPosition.y = 0;
+    if (mPosition.x <= 0) {
+        mPosition.x = 0;
+        if (mVelocityX < 0) { // Moving left
+            mVelocityX = 0;
+            mMoveAccumulatorX = 0;
+        }
+    }
+    if (mPosition.y <= 0) {
+        mPosition.y = 0;
+        if (mVelocityYFloat < 0) { // Moving up
+            mVelocityYFloat = 0;
+            mMoveAccumulatorY = 0;
+        }
+    }
+    if (mPosition.x >= world.TILE_SIZE * world.WIDTH - mSIZE) {
+        mPosition.x = world.TILE_SIZE * world.WIDTH - mSIZE;
+        if (mVelocityX > 0) { // Moving right
+            mVelocityX = 0;
+            mMoveAccumulatorX = 0;
+        }
+    }
+    if (mPosition.y >= world.TILE_SIZE * world.HEIGHT - mSIZE) {
+        mPosition.y = world.TILE_SIZE * world.HEIGHT - mSIZE;
+        if (mVelocityYFloat > 0) { // Moving down
+            mVelocityYFloat = 0;
+            mMoveAccumulatorY = 0;
+        }
+    }
 
     mDestRect.x = mPosition.x;
     mDestRect.y = mPosition.y;
