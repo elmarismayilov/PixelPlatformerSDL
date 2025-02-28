@@ -105,3 +105,8 @@ Game loop design and delta-time physics.
 Code structuring for scalability and reuse.
 
 Built by Elmar Ismayilov, a coder, student passionate about game development and collaborative projects.
+
+License
+
+This project is open-source under the MIT License. Fork, modify, or build upon it freely!
+
